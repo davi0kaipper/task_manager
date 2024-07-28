@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateTaskRequest;
 use App\Models\Task;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
@@ -18,8 +17,11 @@ class TaskController extends Controller
     {
         $taskData = $request->all();
 
-        $task = Task::create($taskData);
+        $task = Task::create([
+            'description' => $taskData['description'],
+            'user_id' => $request->user()->id
+        ]);
 
-        return response()->json([$task], 201);
+        return response()->json($task, 201);
     }
 }
