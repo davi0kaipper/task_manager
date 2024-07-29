@@ -24,4 +24,22 @@ class TaskController extends Controller
 
         return response()->json($task, 201);
     }
+
+    public function delete(string $id): JsonResponse
+    {
+        $task = Task::firstWhere('id', '=', $id);
+
+        if (! $task) {
+            return response()->json(['Task not found.'], 404);
+        }
+
+        $taskData = $task->toArray();
+        $task->delete();
+
+        return response()->json([
+            'message' => 'Task deleted.',
+            'task_id' => $taskData['id'],
+            'task_description' => $taskData['description']
+        ], 200);
+    }
 }
