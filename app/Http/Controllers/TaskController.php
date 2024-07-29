@@ -37,7 +37,8 @@ class TaskController extends Controller
         $taskData = $request->all();
 
         $task->update([
-            'description' => $taskData['description']
+            'description' => $taskData['description'],
+            'completed' => $taskData['completed'],
         ]);
 
         return response()->json([
