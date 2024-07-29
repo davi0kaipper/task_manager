@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateTaskRequest;
+use App\Http\Requests\UpdateTaskRequest;
 use App\Models\Task;
 use Illuminate\Http\JsonResponse;
 
@@ -25,6 +26,25 @@ class TaskController extends Controller
         return response()->json($task, 201);
     }
 
+    public function update(string $id, UpdateTaskRequest $request): JsonResponse
+    {
+        $task = Task::firstWhere('id', '=', $id);
+
+        if (! $task) {
+            return response()->json(['Task not found.'], 404);
+        }
+
+        $taskData = $request->all();
+
+        $task->update([
+            'description' => $taskData['description']
+        ]);
+
+        return response()->json([
+            'message' => 'Task updated.',
+            'task' => $task
+        ], 200);
+    }
     public function delete(string $id): JsonResponse
     {
         $task = Task::firstWhere('id', '=', $id);
