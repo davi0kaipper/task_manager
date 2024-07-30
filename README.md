@@ -1,66 +1,207 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Task Manager
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Description
 
-## About Laravel
+Task Manager is an application that allows its users to have control of the activities they wanna develop.
+The app allows for the creation, listing, updating and deleting of tasks.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## How to use it
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Task Manager can be used both through api routes following the instructions below:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+1. Install the app using GitHub
+    
+2. Run the server using ```php artisan serve```
 
-## Learning Laravel
+3. Consume the API through your app of choice. Ex.: Insomnia, Postman
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Interaction with the app
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### Registering
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+#### Request
 
-## Laravel Sponsors
+- HTTP Method: POST
+- Route: localhost:8000/register
+- Body format:
+{
+    "name" : string,
+    "email" : string,
+    "password" : string
+}
+- Body example:
+{
+    "name" : "Jonas Dorival",
+    "email" : "jonas.dorival@email.com",
+    "password" : "braSil1sH0m3!"
+}
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+#### Response
+- Response Status Codes:
+    - 200 OK
+    - 422 Unprocessable Content
+- Response type: json object
+- Reponse Body (200 OK):
+{
+	"id": "9ca446c6-4fbc-462b-9b97-85a5afbb8a87",
+	"name": "Jonas Dorival",
+	"email": "jonas.dorival@email.com"
+}
 
-### Premium Partners
+### Authentication
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+#### Request
 
-## Contributing
+- HTTP Method: POST
+- Route: localhost:8000/login
+- Body format:
+{
+    "email" : string,
+    "password" : string
+}
+- Body example:
+{
+    "email" : "jonas.dorival@email.com",
+    "password" : "braSil1sH0m3!"
+}
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+#### Response
+- Response Status Codes:
+    - 200 OK
+    - 422 Unprocessable Content
+- Response type: json object
+- Reponse Body (200 OK):
+{
+	"message": "Authenticated",
+	"token": "1|YQSlSFQItiwM9IJzwkylVJWXB26kTrwhT3yKfn2R10ceb4be"
+}
 
-## Code of Conduct
+### Creating Tasks
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+#### Request
 
-## Security Vulnerabilities
+- HTTP Method: POST
+- Route: localhost:8000/tasks
+- Authentication: Bearer Token - "token" attribute from Authentication route
+- Body format:
+{
+    "description" : string
+}
+- Body example:
+{
+    "description" : "wash the dishes"
+}
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+#### Response
 
-## License
+- Response Status Codes:
+    - 201 Created
+    - 401 Unauthorized
+    - 422 Unprocessable Content
+- Response type: json object
+- Reponse Body (200 OK):
+{
+    "id": "9ca253bf-2cc9-4850-b966-7848f4aee3b9",
+    "description": "buy a phone",
+    "completed": false,
+    "created_at": "2024-07-28T23:40:36.000000Z",
+    "updated_at": "2024-07-29T00:34:11.000000Z",
+    "user_id": "9ca25386-59fd-4e6d-b8cb-a89b5537bd13"
+}
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Listing Tasks
+
+- HTTP Method: GET
+- Route: localhost:8000/tasks
+- Authentication: Bearer Token - "token" attribute from Authentication route
+- Body format:
+no body
+
+#### Response
+
+- Response Status Codes:
+    - 200 OK
+    - 401 Unauthorized
+    - 422 Unprocessable Content
+- Response type: Array
+- Reponse Body (200 OK):
+[
+	{
+		"id": "9ca253bf-2cc9-4850-b966-7848f4aee3b9",
+		"description": "buy a phone",
+		"completed": false,
+		"created_at": "2024-07-28T23:40:36.000000Z",
+		"updated_at": "2024-07-29T00:34:11.000000Z",
+		"user_id": "9ca25386-59fd-4e6d-b8cb-a89b5537bd13"
+	},
+	{
+		"id": "9ca25645-d9d7-42f7-9700-ac067e4219d4",
+		"description": "wash dishes",
+		"completed": false,
+		"created_at": "2024-07-28T23:47:40.000000Z",
+		"updated_at": "2024-07-28T23:47:40.000000Z",
+		"user_id": "9ca25386-59fd-4e6d-b8cb-a89b5537bd13"
+	}
+]
+
+### Updating Tasks
+
+#### Request
+
+- HTTP Method: PUT
+- Route: localhost:8000/tasks/:id
+- Authentication: Bearer Token - "token" attribute from Authentication route
+- Body format:
+{
+    "description" : string
+}
+- Body example:
+{
+    "description" : "wash the car"
+}
+
+#### Response
+
+- Response Status Codes:
+    - 200 OK
+    - 401 Unauthorized
+    - 404 Not Found
+    - 422 Unprocessable Content
+- Response type: json object
+- Reponse Body (200 OK):
+{
+	"message": "Task updated.",
+	"task": {
+		"id": "9ca253bf-2cc9-4850-b966-7848f4aee3b9",
+		"description": "buy dinner",
+		"completed": false,
+		"created_at": "2024-07-28T23:40:36.000000Z",
+		"updated_at": "2024-07-29T02:22:54.000000Z",
+		"user_id": "9ca25386-59fd-4e6d-b8cb-a89b5537bd13"
+	}
+}
+
+### Deleting Tasks
+
+#### Request
+
+- HTTP Method: DELETE
+- Route: localhost:8000/tasks/:id
+- Authentication: Bearer Token - "token" attribute from Authentication route
+- Body format:
+no body
+
+#### Response
+
+- Response Status Codes:
+    - 200 OK
+    - 401 Unauthorized
+    - 404 Not Found
+    - 422 Unprocessable Content
+- Response type: json object
+- Reponse Body (200 OK):
+{
+	"message": "Task deleted.",
+	"task_id": "9ca253bf-2cc9-4850-b966-7848f4aee3b9",
+	"task_description": "buy dinner"
+}
